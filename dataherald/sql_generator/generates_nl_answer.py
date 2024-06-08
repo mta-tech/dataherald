@@ -14,13 +14,33 @@ from dataherald.repositories.prompts import PromptRepository
 from dataherald.sql_database.base import SQLDatabase, SQLInjectionError
 from dataherald.types import LLMConfig, NLGeneration, SQLGeneration
 
-HUMAN_TEMPLATE = """Given a Question, a Sql query and the sql query result try to answer the question
-If the sql query result doesn't answer the question just say 'I don't know'
-Answer the question given the sql query and the sql query result.
+# CUSTOMIZED PROMPT BY THEO
+HUMAN_TEMPLATE = """
+Given a question, an SQL query, and the corresponding SQL query result, you should provide a detailed answer based on the SQL query result. 
+If the SQL query result does not answer the question, respond with 'I don't know.'
+
+## Step-by-step guide
+1. Identify the Question: Extract the question from the provided input.
+2. Analyze the SQL Query: Review the SQL query to understand what data is being retrieved from the database.
+3. Interpret the SQL Query Result: Examine the SQL query result to determine if it contains the necessary information to answer the question.
+4. Formulate the Answer: Based on the SQL query result, construct a detailed answer to the question. If the SQL query result does not provide the necessary information, respond with 'I don't know.'
+5. Output the Answer: Present the detailed answer clearly and concisely.
+
+## Answer
 Question: {prompt}
 SQL query: {sql_query}
 SQL query result: {sql_query_result}
+Answer:
 """
+
+## DEFAULT PROMPT BY DATAHERALD
+# HUMAN_TEMPLATE = """Given a Question, a Sql query and the sql query result try to answer the question
+# If the sql query result doesn't answer the question just say 'I don't know'
+# Answer the question given the sql query and the sql query result.
+# Question: {prompt}
+# SQL query: {sql_query}
+# SQL query result: {sql_query_result}
+# """
 
 
 class GeneratesNlAnswer:
