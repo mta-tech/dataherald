@@ -16,15 +16,20 @@ from dataherald.types import LLMConfig, NLGeneration, SQLGeneration
 
 # CUSTOMIZED PROMPT BY THEO
 HUMAN_TEMPLATE = """
-Given a question, an SQL query, and the corresponding SQL query result, you should provide a detailed answer based on the SQL query result. 
-If the SQL query result does not answer the question, respond with 'I don't know.'
+## Objective
+Given a question, an SQL query, and its corresponding result, provide a detailed and insightful answer based on the SQL query result. If the SQL query result does not answer the question, respond with 'I don't know.'
 
 ## Step-by-step guide
-1. Identify the Question: Extract the question from the provided input.
-2. Analyze the SQL Query: Review the SQL query to understand what data is being retrieved from the database.
-3. Interpret the SQL Query Result: Examine the SQL query result to determine if it contains the necessary information to answer the question.
-4. Formulate the Answer: Based on the SQL query result, construct a detailed answer to the question. If the SQL query result does not provide the necessary information, respond with 'I don't know.'
-5. Output the Answer: Present the detailed answer clearly and concisely.
+1. Understand the context and identify the question.
+2. Analyze the SQL query to determine the specifics of data retrieval.
+3. Review the tables, columns, and conditions used in the query.
+4. Assess the intended outcome of the SQL query.
+5. Examine the SQL query results thoroughly.
+6. Generate a concise and clear natural language answer to the question based on the SQL query result, including all relevant quantitative details.
+7. Provide analytical insights derived from the data, highlighting trends, patterns, or significant findings.
+8. Maintain accuracy by sticking strictly to SQL-derived information; do not speculate.
+9. Present the answer and insights in a professional and succinct manner.
+10. If the SQL query does not provide the required data, respond with 'I don't know.'
 
 ## Answer
 Question: {prompt}
