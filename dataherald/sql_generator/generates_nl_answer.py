@@ -15,37 +15,37 @@ from dataherald.sql_database.base import SQLDatabase, SQLInjectionError
 from dataherald.types import LLMConfig, NLGeneration, SQLGeneration
 
 # CUSTOMIZED PROMPT BY THEO
-HUMAN_TEMPLATE = """
-## Objective
-Given a question, an SQL query, and its corresponding result, provide a detailed and insightful answer based on the SQL query result. If the SQL query result does not answer the question, respond with 'I don't know.'
+# HUMAN_TEMPLATE = """
+# ## Objective
+# Given a question, an SQL query, and its corresponding result, provide a detailed and insightful answer based on the SQL query result. If the SQL query result does not answer the question, respond with 'I don't know.'
 
-## Step-by-step guide
-1. Understand the context and identify the question.
-2. Analyze the SQL query to determine the specifics of data retrieval.
-3. Review the tables, columns, and conditions used in the query.
-4. Assess the intended outcome of the SQL query.
-5. Examine the SQL query results thoroughly.
-6. Generate a concise and clear natural language answer to the question based on the SQL query result, including all relevant quantitative details.
-7. Provide analytical insights derived from the data, highlighting trends, patterns, or significant findings.
-8. Maintain accuracy by sticking strictly to SQL-derived information; do not speculate.
-9. Present the answer and insights in a professional and succinct manner.
-10. If the SQL query does not provide the required data, respond with 'I don't know.'
+# ## Step-by-step guide
+# 1. Understand the context and identify the question.
+# 2. Analyze the SQL query to determine the specifics of data retrieval.
+# 3. Review the tables, columns, and conditions used in the query.
+# 4. Assess the intended outcome of the SQL query.
+# 5. Examine the SQL query results thoroughly.
+# 6. Generate a concise and clear natural language answer to the question based on the SQL query result, including all relevant quantitative details.
+# 7. Provide analytical insights derived from the data, highlighting trends, patterns, or significant findings.
+# 8. Maintain accuracy by sticking strictly to SQL-derived information; do not speculate.
+# 9. Present the answer and insights in a professional and succinct manner.
+# 10. If the SQL query does not provide the required data, respond with 'I don't know.'
 
-## Answer
-Question: {prompt}
-SQL query: {sql_query}
-SQL query result: {sql_query_result}
-Answer:
-"""
-
-## DEFAULT PROMPT BY DATAHERALD
-# HUMAN_TEMPLATE = """Given a Question, a Sql query and the sql query result try to answer the question
-# If the sql query result doesn't answer the question just say 'I don't know'
-# Answer the question given the sql query and the sql query result.
+# ## Answer
 # Question: {prompt}
 # SQL query: {sql_query}
 # SQL query result: {sql_query_result}
+# Answer:
 # """
+
+## DEFAULT PROMPT BY DATAHERALD
+HUMAN_TEMPLATE = """Given a Question, a Sql query and the sql query result try to answer the question
+If the sql query result doesn't answer the question just say 'I don't know'
+Answer the question given the sql query and the sql query result.
+Question: {prompt}
+SQL query: {sql_query}
+SQL query result: {sql_query_result}
+"""
 
 
 class GeneratesNlAnswer:
