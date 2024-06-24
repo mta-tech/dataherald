@@ -14,6 +14,10 @@ from dataherald.repositories.prompts import PromptRepository
 from dataherald.sql_database.base import SQLDatabase, SQLInjectionError
 from dataherald.types import LLMConfig, NLGeneration, SQLGeneration
 
+from langchain_community.callbacks import get_openai_callback
+import logging
+logger = logging.getLogger(__name__)
+
 # CUSTOMIZED PROMPT BY THEO
 # HUMAN_TEMPLATE = """
 # ## Objective
@@ -112,13 +116,31 @@ class GeneratesNlAnswer:
         human_message_prompt = HumanMessagePromptTemplate.from_template(HUMAN_TEMPLATE)
         chat_prompt = ChatPromptTemplate.from_messages([human_message_prompt])
         chain = LLMChain(llm=self.llm, prompt=chat_prompt)
-        nl_resp = chain.invoke(
-            {
-                "prompt": prompt.text,
-                "sql_query": sql_generation.sql,
-                "sql_query_result": "\n".join([str(row) for row in rows]),
-            }
-        )
+
+        # ORIGINAL CODE
+        # nl_resp = chain.invoke(
+        #     {
+        #         "prompt": prompt.text,
+        #         "sql_query": sql_generation.sql,
+        #         "sql_query_result": "\n".join([str(row) for row in rows]),
+        #     }
+        # )
+
+        # MODIIFIED BY THEO
+        with get_openai_callback() as cb:
+            try:
+                nl_resp = chain.invoke(
+                    {
+                        "prompt": prompt.text,
+                        "sql_query": sql_generation.sql,
+                        "sql_query_result": "\n".join([str(row) for row in rows]),
+                    }
+                )
+            except Exception as e:
+                logger.error(e)        
+        logger.info(f"cost: {str(cb.total_cost)} tokens: {str(cb.total_tokens)}")
+        # END OF MODIFIED
+
         return NLGeneration(
             sql_generation_id=sql_generation.id,
             llm_config=self.llm_config,
